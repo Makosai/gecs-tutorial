@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5cncna7iw00y"]
+
+[ext_resource type="Script" uid="uid://chuwl4pdkjctu" path="res://entities/e_player.gd" id="1"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ljnhu"]
+
+[node name="Player" type="Node3D"]
+script = ExtResource("1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_ljnhu")
