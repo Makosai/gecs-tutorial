@@ -54,7 +54,7 @@ func process_all(_entities, _delta):
 			phase += 1
 		5:
 			# Try to read deleted player entity
-			var still_exists = ECS.world.entities.has(player_entity)
+			var still_exists = player_entity != null # The node has been freed from memory
 			print("Deleted player entity still exists! (ERROR)" if still_exists else "Confirmed: Player entity is deleted.")
 			# Optionally, remove this system from the world now that demo is done
 			ECS.world.remove_system(self)
