@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://ccynmdgsy7cpi"]
+[gd_scene load_steps=7 format=3 uid="uid://ccynmdgsy7cpi"]
 
 [ext_resource type="Script" uid="uid://c20j2b8mxfrli" path="res://scenes/room.gd" id="1_36trf"]
 [ext_resource type="Script" uid="uid://cdu5tlyk72uu4" path="res://addons/gecs/ecs/world.gd" id="2_ffxv4"]
@@ -7,6 +7,13 @@
 [sub_resource type="Resource" id="Resource_14vil"]
 script = ExtResource("3_85yof")
 metadata/_custom_type_script = "uid://cf84mkp0nv2mk"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_85yof"]
+albedo_color = Color(0.8540312, 0.7768276, 0.6601496, 1)
+
+[sub_resource type="Environment" id="Environment_85yof"]
+background_mode = 1
+background_color = Color(0.9060518, 0.94160795, 1, 1)
 
 [node name="Room" type="Node3D"]
 script = ExtResource("1_36trf")
@@ -23,25 +30,31 @@ metadata/_custom_type_script = "uid://cdu5tlyk72uu4"
 [node name="Systems" type="Node" parent="World"]
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+use_collision = true
 
 [node name="Floor" type="CSGBox3D" parent="CSGCombiner3D"]
 size = Vector3(50, 1, 50)
+material = SubResource("StandardMaterial3D_85yof")
 
 [node name="Wall_N" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -25.5)
 size = Vector3(50, 10, 1)
+material = SubResource("StandardMaterial3D_85yof")
 
 [node name="Wall_S" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 25.5)
 size = Vector3(50, 10, 1)
+material = SubResource("StandardMaterial3D_85yof")
 
 [node name="Wall_E" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.5, 5.5, 0)
 size = Vector3(1, 10, 50)
+material = SubResource("StandardMaterial3D_85yof")
 
 [node name="Wall_W" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.5, 5.5, 0)
 size = Vector3(1, 10, 50)
+material = SubResource("StandardMaterial3D_85yof")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.64278764, 0.76604444, 0, -0.76604444, 0.64278764, 0, 50, 37)
@@ -51,3 +64,6 @@ current = true
 transform = Transform3D(0.64278764, -0.7399421, 0.19826691, 0, 0.25881907, 0.9659258, -0.76604444, -0.6208852, 0.1663657, 0, 0, 0)
 shadow_enabled = true
 shadow_blur = 0.1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_85yof")

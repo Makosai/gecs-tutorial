@@ -1,12 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://b5cncna7iw00y"]
+[gd_scene load_steps=4 format=3 uid="uid://b5cncna7iw00y"]
 
 [ext_resource type="Script" uid="uid://chuwl4pdkjctu" path="res://entities/e_player.gd" id="1"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ljnhu"]
 
-[node name="Player" type="Node3D"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ljnhu"]
+
+[node name="Player" type="CharacterBody3D"]
+axis_lock_angular_x = true
+axis_lock_angular_z = true
 script = ExtResource("1")
+uuid = "95d4e6af-c072-453c-8e9c-2d788900a736"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_ljnhu")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.54995155, 0.3471222)
+size = Vector3(0.44311523, 0.36029053, 0.38504028)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_ljnhu")
