@@ -9,7 +9,7 @@ func _init():
 	self.group = "camera"
 
 func query() -> QueryBuilder:
-	return q.with_all([C_Transform, C_CameraState, C_CameraTarget]).with_group(["camera"])
+	return q.with_all([C_Camera, C_Transform, C_CameraState, C_CameraTarget])
 
 func process(camera_entity: Entity, delta: float) -> void:
 	var cam_state := camera_entity.get_component(C_CameraState) as C_CameraState
@@ -58,10 +58,11 @@ func process(camera_entity: Entity, delta: float) -> void:
 	# Sync ECS component to camera node transform
 	camera_entity.global_transform = cam_transform.transform
 
-func _unhandled_input(event):
+func _unhandled_input(event: InputEvent):
 	# Capture scroll wheel input for zooming
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+	if event is InputEventMouseButton and event.is_pressed():
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_WHEEL_UP:
 			scroll_delta += 1
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+		elif mouse_event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
 			scroll_delta -= 1

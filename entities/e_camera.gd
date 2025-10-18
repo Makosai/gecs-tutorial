@@ -4,6 +4,7 @@ extends Entity
 
 func define_components() -> Array:
 	return [
+		C_Camera.new(),
 		C_CameraState.new(),
 		C_CameraTarget.new(),
 		C_Transform.new(self.global_transform),

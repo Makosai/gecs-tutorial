@@ -12,7 +12,7 @@ func _init():
 	self.group = "gameplay"
 
 func query() -> QueryBuilder:
-	return q.with_all([C_Transform, C_Input]).with_group(["player"])
+	return q.with_all([C_Player, C_Transform, C_Input])
 
 func process(entity: Entity, delta: float) -> void:
 	var cbody := entity as Node as CharacterBody3D
@@ -25,10 +25,10 @@ func process(entity: Entity, delta: float) -> void:
 		return
 
 	# --- Get the camera's yaw from the camera entity ---
-	var camera_entity := ECS.world.query.with_all([C_CameraState]).with_group(["camera"]).execute_one()
+	var camera_entity := ECS.world.query.with_all([C_Camera, C_CameraState]).execute_one()
 	var yaw := 0.0
 	if camera_entity:
-		var cam_state = camera_entity.get_component(C_CameraState)
+		var cam_state := camera_entity.get_component(C_CameraState) as C_CameraState
 		yaw = deg_to_rad(cam_state.yaw) # convert to radians if stored in degrees
 
 	# --- Camera-relative movement vector ---
@@ -67,7 +67,7 @@ func process(entity: Entity, delta: float) -> void:
 
 	# Reset if out of bounds
 	var pos := cbody.global_transform.origin
-	if abs(pos.x) > ROOM_LIMIT or abs(pos.z) > ROOM_LIMIT or pos.y < -10:
+	if absf(pos.x) as float > ROOM_LIMIT or absf(pos.z) as float > ROOM_LIMIT or pos.y < -10:
 		var new_pos := Vector3(0, 1, 0)
 		var new_transform := cbody.global_transform
 		new_transform.origin = new_pos

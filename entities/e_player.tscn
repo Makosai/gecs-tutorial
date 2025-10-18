@@ -10,7 +10,7 @@
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("1")
-uuid = "95d4e6af-c072-453c-8e9c-2d788900a736"
+id = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

@@ -35,6 +35,12 @@ func _ready():
 	var player_movement_system := preload("res://systems/gameplay/s_player_movement.gd").new()
 	ECS.world.add_system(player_movement_system)
 
+	var spell_cast_system := preload("res://systems/gameplay/s_spell_cast.gd").new()
+	ECS.world.add_system(spell_cast_system)
+
+	var spell_movement_system := preload("res://systems/gameplay/s_spell_movement.gd").new()
+	ECS.world.add_system(spell_movement_system)
+
 	var camera_system := preload("res://systems/camera/s_third_person_camera.gd").new()
 	ECS.world.add_system(camera_system)
 

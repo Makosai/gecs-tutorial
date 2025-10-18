@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cuqpv4qla1nb2"]
+
+[ext_resource type="Script" uid="uid://c5x0lb00pym42" path="res://entities/e_spell.gd" id="1"]
+
+[sub_resource type="SphereShape3D" id="SphereShape_spell"]
+radius = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o3cbu"]
+albedo_color = Color(0.90483475, 0, 0.04165785, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_spell"]
+material = SubResource("StandardMaterial3D_o3cbu")
+radius = 0.4
+height = 0.8
+
+[node name="Spell" type="Area3D"]
+collision_layer = 2
+collision_mask = 4294967295
+script = ExtResource("1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape_spell")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_spell")

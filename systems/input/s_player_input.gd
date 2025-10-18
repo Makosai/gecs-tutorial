@@ -7,7 +7,9 @@ func _init():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func query() -> QueryBuilder:
-	return q.with_all([C_Input]) # Optionally add .with_group("player")
+	# Optionally add .with_group("player")
+	# but avoid using with_group() for performance reasons
+	return q.with_all([C_Player, C_Input])
 
 func process(entity: Entity, _delta: float) -> void:
 	# Capture and release mouse mode
@@ -17,7 +19,7 @@ func process(entity: Entity, _delta: float) -> void:
 		if Input.is_action_just_pressed("ui_cancel"):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
-	var input = entity.get_component(C_Input)
+	var input := entity.get_component(C_Input) as C_Input
 	input.move_vector = Vector3.ZERO
 	input.jump = false
 	input.cast_spell = false

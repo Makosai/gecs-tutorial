@@ -13,8 +13,8 @@ func process_all(_entities, _delta):
 	match phase:
 		0:
 			# Create the player entity (visible capsule) and add to ECS.world
-			var PlayerScene = preload("res://entities/e_player.tscn")
-			player_entity = PlayerScene.instantiate()
+			var PlayerScene := preload("res://entities/e_player.tscn")
+			player_entity = PlayerScene.instantiate() as Player
 			get_tree().current_scene.add_child(player_entity)
 			ECS.world.add_entity(player_entity)
 			print("Player entity created: ", player_entity)
