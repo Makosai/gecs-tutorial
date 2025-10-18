@@ -4,4 +4,4 @@ extends Component
 @export var score: int = 0
 
 func _init(val: int = 0):
-    score = val
+	score = val

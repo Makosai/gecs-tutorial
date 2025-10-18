@@ -15,7 +15,7 @@ func _init():
 	_default_cast_stream = _make_default_cast_stream()
 
 func query() -> QueryBuilder:
-	return q.with_all([C_Camera, C_Input, C_SpellCooldown, C_Transform])
+	return q.with_all([C_Player, C_Input, C_SpellCooldown, C_Transform])
 
 func process(entity: Entity, delta: float) -> void:
 	var c_input := entity.get_component(C_Input) as C_Input
@@ -35,16 +35,20 @@ func process(entity: Entity, delta: float) -> void:
 		return
 
 	var player_transform := c_transform.transform
-	var forward := -player_transform.basis.z
+	var forward := _get_cast_direction(player_transform)
 	if forward.is_zero_approx():
 		forward = Vector3.FORWARD
+
+	var spawn_origin := player_transform.origin + Vector3.UP * 1.2 + forward * 1.2
+	var spawn_transform := Transform3D().looking_at(spawn_origin + forward, Vector3.UP)
+	spawn_transform.origin = spawn_origin
 
 	var spell := SpellScene.instantiate() as Spell
 	if not spell:
 		push_warning("Failed to instantiate spell scene")
 		return
 	spell.name = "Spell_%s" % Time.get_ticks_msec()
-	spell.global_transform = player_transform
+	spell.global_transform = spawn_transform
 
 	ECS.world.add_entity(spell)
 	spell.configure(forward, spell_speed)
@@ -62,16 +66,34 @@ func _play_cast_sound(position: Vector3) -> void:
 		return
 	var sfx_player := AudioStreamPlayer3D.new()
 	sfx_player.stream = stream
-	sfx_player.global_position = position
 	var tree := get_tree()
 	if tree == null:
 		return
 	var parent := tree.current_scene if tree.current_scene else tree.root
 	parent.add_child(sfx_player)
+	sfx_player.global_position = position
 	sfx_player.finished.connect(func():
 		sfx_player.queue_free()
 	)
 	sfx_player.play()
+
+func _get_cast_direction(player_transform: Transform3D) -> Vector3:
+	var camera_entity := ECS.world.query.with_all([C_CameraState, C_CameraTarget, C_Transform]).execute_one()
+	if camera_entity:
+		var cam_state := camera_entity.get_component(C_CameraState) as C_CameraState
+		var cam_transform := camera_entity.get_component(C_Transform) as C_Transform
+		if cam_state and cam_transform:
+			var yaw := deg_to_rad(cam_state.yaw)
+			var pitch := deg_to_rad(cam_state.pitch)
+			var dir := Vector3(
+				- sin(yaw) * cos(pitch),
+				sin(pitch),
+				- cos(yaw) * cos(pitch)
+			).normalized()
+			if dir.is_zero_approx():
+				dir = - cam_transform.transform.basis.z.normalized()
+			return dir
+	return (-player_transform.basis.z).normalized()
 
 func _make_default_cast_stream() -> AudioStreamWAV:
 	var sample := AudioStreamWAV.new()

@@ -5,5 +5,5 @@ extends Component
 @export var maximum: float = 100.0
 
 func _init(max_health: float = 100.0):
-    maximum = max_health
-    current = max_health
+	maximum = max_health
+	current = max_health
